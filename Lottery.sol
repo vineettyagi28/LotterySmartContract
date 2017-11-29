@@ -1,9 +1,10 @@
 pragma solidity ^0.4.11;
 
 contract Lottery {
+
     mapping(uint => address) public gamblers;// A mapping to store ethereum addresses of the gamblers
     uint8 public player_count; //keep track of how many people are signed up.
-    uint public ante; //how big is the bet per person (in ether)
+    uint256 public ante; //how big is the bet per person (in ether)
     uint8 public required_number_players; //how many sign ups trigger the lottery
     address owner; // owner of the contract
     mapping(address => uint) public bet;// A mapping to store ethereum addresses and chosenNumber
@@ -19,11 +20,12 @@ contract Lottery {
 
 
     //constructor
-    function Lottery(uint _ante, uint8 _required_number_players, uint _winner_percentage){
+    function Lottery(uint _ante, uint8 _required_number_players, uint lottery_number){
         owner = msg.sender;
         player_count = 0;
         ante = _ante;
         required_number_players = _required_number_players;
+        lotteryNumber = lottery_number;
     }
 
 
@@ -37,7 +39,7 @@ function buy (uint chosenNumber) payable {
 
     // If the bet is not equal to the ante, send the
     // money back.
-    if(msg.value != ante) throw; // give it back, revert state changes, abnormal stop
+    if(msg.value / 1000000000000000000 != ante) throw; // give it back, revert state changes, abnormal stop
     if(player_count == required_number_players) throw; // If enough participants then stop accepting
     if(chosenNumber < 1 || chosenNumber > 100) throw;
     player_count +=1;
@@ -49,7 +51,7 @@ function buy (uint chosenNumber) payable {
 function draw() AdminOnly{
     
     uint closestNum = 100;
-    address winner;
+    address winner = 0;
     
     for(uint i = 1; i<=player_count ;i++){
         uint betNum = bet[gamblers[player_count]];
