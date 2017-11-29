@@ -1,14 +1,6 @@
 pragma solidity ^0.4.11;
 
-// Contract that:
-//      Lets anyone bet with x ethers
-//      When it reaches y bets, it chooses a gambler at random and sends z% of the ethers received. other v% goes to GiveDirectly
-
-
 contract Lottery {
-
-
-
     mapping(uint => address) public gamblers;// A mapping to store ethereum addresses of the gamblers
     uint8 public player_count; //keep track of how many people are signed up.
     uint public ante; //how big is the bet per person (in ether)
